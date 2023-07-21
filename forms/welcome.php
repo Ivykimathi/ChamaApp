@@ -17,36 +17,53 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body{ font: 14px sans-serif; text-align: center; }
-    </style>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Navbar</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-    <div class="navbar-nav">
-      <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
-      <a class="nav-item nav-link" href="#">Features</a>
-      <a class="nav-item nav-link" href="#">Pricing</a>
-      <a class="nav-item nav-link disabled" href="#">Disabled</a>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="reset-password.php" class="btn btn-warning">Reset Your Password< /a>
-          <a class="dropdown-item" href="logout.php" class="btn btn-danger ml-3">Sign Out of Your Account</a>
-        </div>
-      </li>
+        header{ transition: all 0.5s; z-index: 997;padding: 15px 0;margin-top:0px;background: #37517e;}
+        #header.header-scrolled,#header.header-inner-pages {background: rgba(40, 58, 90, 0.9);}
+        
+        .navbar {padding: 0;}
+.navbar ul {margin: 0;padding: 0;display: flex;list-style: none;align-items: center;}
+.navbar li {position: relative;}
+.navbar a, .navbar a:focus {display: flex;align-items: center;justify-content: space-between;padding: 10px 0 10px 30px;font-size: 15px;font-weight: 500;white-space: nowrap;transition: 0.3s;}
+.navbar a i,.navbar a:focus i {font-size: 12px;line-height: 0;margin-left: 5px;}
+.navbar a:hover,.navbar .active,.navbar .active:focus,.navbar li:hover>a {color: #47b2e4;}
+.navbar .getstarted,.navbar .getstarted:focus {padding: 8px 20px;margin-left: 30px;border-radius: 50px;color: #fff;font-size: 14px;border: 2px solid #47b2e4;font-weight: 600; }
+.navbar .getstarted:hover,.navbar .getstarted:focus:hover {color: #fff;background: #31a9e1; }
+.navbar .dropdown ul {display: block;position: absolute;left: 14px;top: calc(100% + 30px);margin: 0;padding: 10px 0;z-index: 99;opacity: 0;visibility: hidden;background: #fff;box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);transition: 0.3s;border-radius: 4px; }
+.navbar .dropdown ul li {min-width: 200px; }
+.navbar .dropdown ul a {padding: 10px 20px;font-size: 14px;text-transform: none;font-weight: 500;color: #0c3c53; }
+.navbar .dropdown ul a i {font-size: 12px; }
+.navbar .dropdown ul a:hover,.navbar .dropdown ul .active:hover,.navbar .dropdown ul li:hover>a {color: #47b2e4; }
+.navbar .dropdown:hover>ul {opacity: 1;top: 100%;visibility: visible; }
+.navbar .dropdown .dropdown ul {top: 0;left: calc(100% - 30px);visibility: hidden; }
+.navbar .dropdown .dropdown:hover>ul {opacity: 1;top: 0;left: 100%;visibility: visible; }</style><!-- ======= Header ======= --><header id="header" class="fixed-top "><div class="container d-flex align-items-center">
+<h1 class="logo me-auto"><a href="index.html">Chama App</a></h1>  <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto active" href="index.php">Home</a></li>
+          <li><a class="nav-link scrollto" href="index.php">About</a></li>
+          <li><a class="nav-link scrollto" href="index.php">Services</a></li>
+          <li class="dropdown"><a><span>Choose</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="index.php">Logout</a></li>
+              <li><a href="register.php">Register</a></li>
+            </ul>
+          </li>
+          <li><a class="nav-link scrollto" href="index.php">Contact</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
     </div>
-  </div>
-</nav>
+  </header><!-- End Header -->
 </head>
 <body>
+  <br><br>
     <h1 class="my-5">Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to our site.</h1>
     <p>
         <a href="reset-password.php" class="btn btn-warning">Reset Your Password</a>
-        <a href="logout.php" class="btn btn-danger ml-3">Sign Out of Your Account</a>
+        <a href="index.php" class="btn btn-danger ml-3">Sign Out of Your Account</a>
     </p>
 
     <body>

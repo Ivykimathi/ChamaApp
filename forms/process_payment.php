@@ -1,60 +1,85 @@
 <?php
+date_default_timezone_set('Africa/Nairobi');
 
-// Validate and sanitize input data (phone_number and amount)
-$phoneNumber = isset($_POST['phone_number']) ? $_POST['phone_number'] : '';
-$amount = isset($_POST['amount']) ? $_POST['amount'] : '';
+if (isset($_POST['phone_number']) && isset($_POST['amount'])) {
+    # access token
+    $consumerKey = 'nk16Y74eSbTaGQgc9WF8j6FigApqOMWr'; // Fill with your app Consumer Key
+    $consumerSecret = '40fD1vRXCq90XFaU'; // Fill with your app Secret
 
-// Validate the phone number and amount (add more validation as needed)
-if (empty($phoneNumber) || empty($amount) || !is_numeric($amount)) {
-    // Handle invalid input, e.g., display an error message or redirect back to the form.
-    die('Invalid input. Please provide a valid phone number and amount.');
+    # Define the variables
+    # Provide the following details, this part is found on your test credentials on the developer account
+    $BusinessShortCode = '174379';
+    $Passkey = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919';
+
+    /*
+        This is your info, for
+        $PartyA should be the ACTUAL client's phone number or your phone number, format 2547********
+        $AccountReference, it may be an invoice number, account number, etc. on production systems, but for test just put anything
+        TransactionDesc can be anything, probably a better description of the transaction
+        $Amount, this is the total invoiced amount. Any amount here will be actually deducted from a client's side/your test phone number once the PIN has been entered to authorize the transaction. For developer/test accounts, this money will be reversed automatically by midnight.
+    */
+
+    $PartyA = $_POST['phone_number']; // This is the phone number entered in the form
+    $AccountReference = '2255';
+    $TransactionDesc = 'Test Payment';
+    $Amount = $_POST['amount']; // This is the amount entered in the form
+
+    # Get the timestamp, format YYYYmmddhms -> 20181004151020
+    $Timestamp = date('YmdHis');
+
+    # Get the base64 encoded string -> $password. The passkey is the M-PESA Public Key
+    $Password = base64_encode($BusinessShortCode . $Passkey . $Timestamp);
+
+    # Header for access token
+    $headers = ['Content-Type:application/json; charset=utf8'];
+
+    # M-PESA endpoint URLs
+    $access_token_url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
+    $initiate_url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+
+    # Callback URL
+    $CallBackURL = 'https://6a3c-197-156-129-118.ngrok-free.app/callback.php'; // Replace with your Ngrok callback URL
+
+    $curl = curl_init($access_token_url);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($curl, CURLOPT_HEADER, FALSE);
+    curl_setopt($curl, CURLOPT_USERPWD, $consumerKey . ':' . $consumerSecret);
+    $result = curl_exec($curl);
+    $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    $result = json_decode($result);
+    $access_token = $result->access_token;
+    curl_close($curl);
+
+    # Header for STK push
+    $stkheader = ['Content-Type:application/json', 'Authorization:Bearer ' . $access_token];
+
+    # Initiating the transaction
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, $initiate_url);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $stkheader); // Setting custom header
+
+    $curl_post_data = array(
+        // Fill in the request parameters with valid values
+        'BusinessShortCode' => $BusinessShortCode,
+        'Password' => $Password,
+        'Timestamp' => $Timestamp,
+        'TransactionType' => 'CustomerPayBillOnline',
+        'Amount' => $Amount,
+        'PartyA' => $PartyA,
+        'PartyB' => $BusinessShortCode,
+        'PhoneNumber' => $PartyA,
+        'CallBackURL' => $CallBackURL,
+        'AccountReference' => $AccountReference,
+        'TransactionDesc' => $TransactionDesc
+    );
+
+    $data_string = json_encode($curl_post_data);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+    $curl_response = curl_exec($curl);
+    print_r($curl_response);
+
+    echo $curl_response;
 }
-
-// Replace 'YOUR_DARAJA_API_ENDPOINT' with the actual API endpoint provided by Safaricom Daraja
-$darajaApiEndpoint = 'YOUR_DARAJA_API_ENDPOINT';
-
-// Replace 'YOUR_DARAJA_API_KEY' with your Daraja API key
-$apiKey = 'YOUR_DARAJA_API_KEY';
-
-// Other required parameters for the STK push (you may need to refer to the Daraja API documentation for the exact parameters)
-$accountReference = 'YOUR_ACCOUNT_REFERENCE'; // Replace with your reference number
-$callbackURL = 'YOUR_CALLBACK_URL'; // Replace with the URL to receive the callback from the API
-
-// Prepare the data for the API request
-$data = [
-    'BusinessShortCode' => 'YOUR_BUSINESS_SHORTCODE', // Replace with your business shortcode
-    'Password' => base64_encode('YOUR_BUSINESS_SHORTCODE' . 'YOUR_DARAJA_PASSKEY' . date('YmdHis')), // Replace with your Daraja Passkey
-    'Timestamp' => date('YmdHis'),
-    'TransactionType' => 'CustomerPayBillOnline',
-    'Amount' => $amount,
-    'PartyA' => $phoneNumber,
-    'PartyB' => 'YOUR_PAYBILL_NUMBER', // Replace with your Paybill number
-    'PhoneNumber' => $phoneNumber,
-    'CallBackURL' => $callbackURL,
-    'AccountReference' => $accountReference,
-    'TransactionDesc' => 'Payment for goods/services', // Customize this description as needed
-];
-
-// Use cURL to send the POST request to the Daraja API
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $darajaApiEndpoint);
-curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-$response = curl_exec($ch);
-curl_close($ch);
-
-// Process the response from the API
-$responseData = json_decode($response, true);
-
-// Handle the response (check for success or failure) and provide feedback to the user
-if (isset($responseData['ResponseCode']) && $responseData['ResponseCode'] == '0') {
-    // STK push initiated successfully
-    echo 'STK push initiated successfully!';
-} else {
-    // STK push failed
-    echo 'Failed to initiate STK push. Error: ' . $responseData['errorMessage'];
-}
-
-?>
