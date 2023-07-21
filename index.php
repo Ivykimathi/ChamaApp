@@ -54,9 +54,9 @@
           <li><a class="nav-link scrollto" href="#services">Services</a></li>
           <li class="dropdown"><a href="#"><span>Choose</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
-              <li><a href="#">login</a></li>
-              <li><a href="#">Register</a></li>
-              <li><a href="#">Log Out</a></li>
+              <li><a href="forms/login.php">login</a></li>
+              <li><a href="forms/register.php">Register</a></li>
+              <li><a href="forms/logout.php">Log Out</a></li>
             </ul>
           </li>
           <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
