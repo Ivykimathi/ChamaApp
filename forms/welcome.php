@@ -35,7 +35,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="reset-password.php" class="btn btn-warning">Reset Your Password< /a>
-          <a class="dropdown-item" href="logout.php" class="btn btn-danger ml-3">Sign Out of Your Account</a>
+          <a class="dropdown-item" href="index.php" class="btn btn-danger ml-3">Sign Out of Your Account</a>
         </div>
       </li>
     </div>
