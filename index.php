@@ -250,10 +250,11 @@
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
-  <centre>
+ 
   <footer id="footer">
 
     <div class="footer-top">
+       <centre>
       <div class="container">
         <div class="row">
 
@@ -269,13 +270,14 @@
           </div>
           </div>
           </div>
+           </centre>
           </div>
 
     
 
           
   </footer><!-- End Footer -->
-  </centre>
+ 
 
   <div id="preloader"></div>
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
