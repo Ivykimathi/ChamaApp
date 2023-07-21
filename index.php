@@ -54,9 +54,15 @@
           <li><a class="nav-link scrollto" href="#services">Services</a></li>
           <li class="dropdown"><a href="#"><span>Choose</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
+<<<<<<< HEAD:index.html
               <li><a href="login.html">login</a></li>
               <li><a href="#">Register</a></li>
               <li><a href="#">Log Out</a></li>
+=======
+              <li><a href="forms/login.php">login</a></li>
+              <li><a href="forms/register.php">Register</a></li>
+              <li><a href="forms/logout.php">Log Out</a></li>
+>>>>>>> a52636230de96d4cf2602383bdf54699a6955c55:index.php
             </ul>
           </li>
           <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
@@ -178,10 +184,37 @@
 
         <div class="section-title">
           <h2>Contact</h2>
-          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+          <p>We are thrilled to connect with you and address any questions, concerns, or feedback you may have. At ChamaApp, we strive to foster a supportive and interactive community, and your input is invaluable to us.</p>
         </div>
 
         <div class="row">
+
+
+          <div class="col-lg-5 d-flex align-items-stretch">
+            <div class="info">
+              <div class="address">
+                <i class="bi bi-geo-alt"></i>
+                <h4>Location:</h4>
+                <p>Nairobi</p>
+              </div>
+
+              <div class="email">
+                <i class="bi bi-envelope"></i>
+                <h4>Email:</h4>
+                <p>info@chamaapp.com</p>
+              </div>
+
+              <div class="phone">
+                <i class="bi bi-phone"></i>
+                <h4>Call:</h4>
+                <p>+254714644146</p>
+              </div>
+
+              <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12097.433213460943!2d-74.0062269!3d40.7101282!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb89d1fe6bc499443!2sDowntown+Conference+Center!5e0!3m2!1smk!2sbg!4v1539943755621" frameborder="0" style="border:0; width: 100%; height: 290px;" allowfullscreen></iframe>
+            </div>
+
+          </div>
+
 
           <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
             <form action="forms/contact.php" method="post" role="form" class="php-email-form">
@@ -195,10 +228,7 @@
                   <input type="email" class="form-control" name="email" id="email" required>
                 </div>
               </div>
-              <div class="form-group">
-                <label for="name">Subject</label>
-                <input type="text" class="form-control" name="subject" id="subject" required>
-              </div>
+            
               <div class="form-group">
                 <label for="name">Message</label>
                 <textarea class="form-control" name="message" rows="10" required></textarea>
@@ -220,6 +250,7 @@
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
+  <centre>
   <footer id="footer">
 
     <div class="footer-top">
@@ -227,13 +258,13 @@
         <div class="row">
 
           <div class="col-lg-3 col-md-6 footer-contact">
-            <h3>Arsha</h3>
+            <h3>ChamaApp</h3>
             <p>
-              A108 Adam Street <br>
-              New York, NY 535022<br>
-              United States <br><br>
-              <strong>Phone:</strong> +1 5589 55488 55<br>
-              <strong>Email:</strong> info@example.com<br>
+              Westlands <br>
+              Nairobi<br>
+              Kenya <br><br>
+              <strong>Phone:</strong> +254714644146<br>
+              <strong>Email:</strong> info@chamaapp.com<br>
             </p>
           </div>
           </div>
@@ -244,6 +275,7 @@
 
           
   </footer><!-- End Footer -->
+  </centre>
 
   <div id="preloader"></div>
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
