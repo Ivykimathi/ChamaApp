@@ -35,7 +35,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 .navbar .dropdown ul a:hover,.navbar .dropdown ul .active:hover,.navbar .dropdown ul li:hover>a {color: #47b2e4; }
 .navbar .dropdown:hover>ul {opacity: 1;top: 100%;visibility: visible; }
 .navbar .dropdown .dropdown ul {top: 0;left: calc(100% - 30px);visibility: hidden; }
-.navbar .dropdown .dropdown:hover>ul {opacity: 1;top: 0;left: 100%;visibility: visible; }</style><!-- ======= Header ======= --><header id="header" class="fixed-top "><div class="container d-flex align-items-center">
+.navbar .dropdown .dropdown:hover>ul {opacity: 1;top: 0;left: 100%;visibility: visible; }
+</style>
+<header id="header" class="fixed-top ">
+  <div class="container d-flex align-items-center">
 <h1 class="logo me-auto"><a href="index.html">Chama App</a></h1>  <!-- Uncomment below if you prefer to use an image logo -->
       <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
@@ -52,11 +55,11 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
           </li>
           <li><a class="nav-link scrollto" href="index.php">Contact</a></li>
         </ul>
-        <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav><!-- .navbar -->
+       
+      </nav>
 
     </div>
-  </header><!-- End Header -->
+  </header>
 </head>
 <body>
   <br><br>
@@ -64,6 +67,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <p>
         <a href="reset-password.php" class="btn btn-warning">Reset Your Password</a>
         <a href="index.php" class="btn btn-danger ml-3">Sign Out of Your Account</a>
+        <a href="paymentform.php" class="btn btn-danger ml-3">Proceed to Payment</a>
     </p>
 
     <body>
