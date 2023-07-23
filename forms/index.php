@@ -374,6 +374,11 @@
                   <input type="email" class="form-control" name="email" id="email" required>
                 </div>
               </div>
+              <div class="form-group col-md-6">
+                  <label for="name">Phone</label>
+                  <input type="text" class="form-control" name="phone" id="phone" required>
+                </div>
+              </div>
             
               <div class="form-group">
                 <label for="name">Message</label>
@@ -441,13 +446,13 @@
 </body>
 <script>
     // Replace 'YOUR_API_KEY' and 'YOUR_USERNAME' with your actual credentials
-    Africastalking.initialize({ apiKey: 'YOUR_API_KEY', username: 'YOUR_USERNAME' });
+    Africastalking.initialize({ apiKey: 'd772ab0e57838ef0f1c78569fb88ed093f018073c845e181ab1b3a914e740156', username: 'goodxy' });
 
     // Function to handle the button click event
     document.getElementById('sendMessageBtn').addEventListener('click', function() {
       // Replace 'RECIPIENT_PHONE_NUMBER' with the actual recipient's phone number
-      const recipientPhoneNumber = 'RECIPIENT_PHONE_NUMBER';
-      const message = 'Hello! Your message has been received.';
+      const recipientPhoneNumber = document.getElementById('phone').value;
+      const message = 'Thanks for reaching out to us. We will address your issue.';
 
       // Send the message via the Africa's Talking API
       Africastalking.SMS.send({
