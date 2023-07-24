@@ -44,7 +44,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="nav-link scrollto active" href="index.php">Home</a></li>
+          <li><a class="nav-link scrollto active" href="ChamaApp/">Home</a></li>
           <li><a class="nav-link scrollto" href="index.php">About</a></li>
           <li><a class="nav-link scrollto" href="index.php">Services</a></li>
           <li class="dropdown"><a><span>Choose</span> <i class="bi bi-chevron-down"></i></a>
