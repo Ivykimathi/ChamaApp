@@ -49,7 +49,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
           <li><a class="nav-link scrollto" href="index.php">Services</a></li>
           <li class="dropdown"><a><span>Choose</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
-              <li><a href="index.php">Logout</a></li>
+              <li><a href="logout.php">Logout</a></li>
               <li><a href="register.php">Register</a></li>
             </ul>
           </li>
@@ -66,7 +66,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <h1 class="my-5">Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to our site.</h1>
     <p>
         <a href="reset-password.php" class="btn btn-warning">Reset Your Password</a>
-        <a href="index.php" class="btn btn-danger ml-3">Sign Out of Your Account</a>
+        <a href="logout.php" class="btn btn-danger ml-3">Sign Out of Your Account</a>
         <a href="paymentform.php" class="btn btn-danger ml-3">Proceed to Payment</a>
     </p>
 
