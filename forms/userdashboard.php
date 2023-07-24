@@ -35,7 +35,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 .navbar .dropdown ul a:hover,.navbar .dropdown ul .active:hover,.navbar .dropdown ul li:hover>a {color: #47b2e4; }
 .navbar .dropdown:hover>ul {opacity: 1;top: 100%;visibility: visible; }
 .navbar .dropdown .dropdown ul {top: 0;left: calc(100% - 30px);visibility: hidden; }
-.navbar .dropdown .dropdown:hover>ul {opacity: 1;top: 0;left: 100%;visibility: visible; }</style><!-- ======= Header ======= --><header id="header" class="fixed-top "><div class="container d-flex align-items-center">
+.navbar .dropdown .dropdown:hover>ul {opacity: 1;top: 0;left: 100%;visibility: visible; }
+</style>
+<header id="header" class="fixed-top ">
+  <div class="container d-flex align-items-center">
 <h1 class="logo me-auto"><a href="index.html">Chama App</a></h1>  <!-- Uncomment below if you prefer to use an image logo -->
       <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
@@ -46,24 +49,25 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
           <li><a class="nav-link scrollto" href="index.php">Services</a></li>
           <li class="dropdown"><a><span>Choose</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
-              <li><a href="index.php">Logout</a></li>
+              <li><a href="logout.php">Logout</a></li>
               <li><a href="register.php">Register</a></li>
             </ul>
           </li>
           <li><a class="nav-link scrollto" href="index.php">Contact</a></li>
         </ul>
-        <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav><!-- .navbar -->
+       
+      </nav>
 
     </div>
-  </header><!-- End Header -->
+  </header>
 </head>
 <body>
   <br><br>
     <h1 class="my-5">Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to our site.</h1>
     <p>
         <a href="reset-password.php" class="btn btn-warning">Reset Your Password</a>
-        <a href="index.php" class="btn btn-danger ml-3">Sign Out of Your Account</a>
+        <a href="logout.php" class="btn btn-danger ml-3">Sign Out of Your Account</a>
+        <a href="paymentform.php" class="btn btn-danger ml-3">Proceed to Payment</a>
     </p>
 
     <body>
@@ -86,21 +90,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         <p><strong>Loan Status:</strong> <?php echo $accountsData['loan_status'] ?? ''; ?></p>
     </div>
 
-    <div class="frame">
-        <h2>Make Monthly Payment</h2>
-        <?php if (isset($message)) { ?>
-            <p><?php echo $message; ?></p>
-        <?php } ?>
-        <form method="POST" action="">
-            <label for="phone_number">Phone Number:</label>
-            <input type="text" id="phone_number" name="phone_number" required>
-
-            <label for="amount">Amount to Pay:</label>
-            <input type="text" id="amount" name="amount" required>
-
-            <input type="submit" name="pay" value="Send Payment">
-        </form>
-    </div>
+    
 </body>
 </body>
 </html>
