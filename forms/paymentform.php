@@ -38,7 +38,7 @@
                 <input type="submit" class="btn btn-primary" value="Submit Payment">
             </div>
         </form>
-        <p class="text-center"><a href="index.php">Back to homepage</a></p>
+        <p class="text-center"><a href="login.php">Back to Userdashboard</a></p>
     </div>    
 </body>
 </html>
