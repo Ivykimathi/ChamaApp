@@ -90,21 +90,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         <p><strong>Loan Status:</strong> <?php echo $accountsData['loan_status'] ?? ''; ?></p>
     </div>
 
-    <div class="frame">
-        <h2>Make Monthly Payment</h2>
-        <?php if (isset($message)) { ?>
-            <p><?php echo $message; ?></p>
-        <?php } ?>
-        <form method="POST" action="">
-            <label for="phone_number">Phone Number:</label>
-            <input type="text" id="phone_number" name="phone_number" required>
-
-            <label for="amount">Amount to Pay:</label>
-            <input type="text" id="amount" name="amount" required>
-
-            <input type="submit" name="pay" value="Send Payment">
-        </form>
-    </div>
+    
 </body>
 </body>
 </html>
