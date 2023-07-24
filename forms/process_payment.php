@@ -20,8 +20,8 @@ if (isset($_POST['phone_number']) && isset($_POST['amount'])) {
     */
 
     $PartyA = $_POST['phone_number']; // This is the phone number entered in the form
-    $AccountReference = '2255';
-    $TransactionDesc = 'Test Payment';
+    $AccountReference = 'CHAMA APP';
+    $TransactionDesc = 'CHAMA APP PAYMENTS';
     $Amount = $_POST['amount']; // This is the amount entered in the form
 
     # Get the timestamp, format YYYYmmddhms -> 20181004151020
@@ -38,7 +38,7 @@ if (isset($_POST['phone_number']) && isset($_POST['amount'])) {
     $initiate_url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
 
     # Callback URL
-    $CallBackURL = 'https://6a3c-197-156-129-118.ngrok-free.app/callback.php'; // Replace with your Ngrok callback URL
+    $CallBackURL = 'https://4911-197-156-129-118.ngrok-free.app/callback.php'; // Replace with your Ngrok callback URL
 
     $curl = curl_init($access_token_url);
     curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
@@ -83,3 +83,4 @@ if (isset($_POST['phone_number']) && isset($_POST['amount'])) {
 
     echo $curl_response;
 }
+

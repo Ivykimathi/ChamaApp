@@ -1,24 +1,23 @@
 <?php
-// Read the raw POST data from M-Pesa
-$mpesa_callback_response = file_get_contents('php://input');
+include 'dbconnection.php';
+header("Content-Type: application/json");
+$stkCallbackResponse = file_get_contents('php://input');
+$logFile = "Mpesastkresponse.json";
+$log = fopen($logFile, "a");
+fwrite($log, $stkCallbackResponse);
+fclose($log);
 
-// Process the callback response (you can save the details in your database for future reference)
-// Decode the JSON response received from M-Pesa
-$callback_data = json_decode($mpesa_callback_response, true);
+$data = json_decode($stkCallbackResponse);
 
-// Get relevant details from the callback response
-$transaction_status = $callback_data['Body']['stkCallback']['ResultCode'];
-$transaction_desc = $callback_data['Body']['stkCallback']['ResultDesc'];
-$merchant_request_id = $callback_data['Body']['stkCallback']['MerchantRequestID'];
-$checkout_request_id = $callback_data['Body']['stkCallback']['CheckoutRequestID'];
-
-// You can update your database with the transaction status and other details here
-
-// Respond to M-Pesa with an acknowledgment
-$response = [
-    'ResultCode' => '0',
-    'ResultDesc' => 'The service was accepted successfully',
-];
-header('Content-Type: application/json');
-echo json_encode($response);
-?>
+$MerchantRequestID = $data->Body->stkCallback->MerchantRequestID;
+$CheckoutRequestID = $data->Body->stkCallback->CheckoutRequestID;
+$ResultCode = $data->Body->stkCallback->ResultCode;
+$ResultDesc = $data->Body->stkCallback->ResultDesc;
+$Amount = $data->Body->stkCallback->CallbackMetadata->Item[0]->Value;
+$TransactionId = $data->Body->stkCallback->CallbackMetadata->Item[1]->Value;
+$UserPhoneNumber = $data->Body->stkCallback->CallbackMetadata->Item[4]->Value;
+//CHECK IF THE TRASACTION WAS SUCCESSFUL 
+if ($ResultCode == 0) {
+  //STORE THE TRANSACTION DETAILS IN THE DATABASE
+  mysqli_query($db, "INSERT INTO transactions (MerchantRequestID,CheckoutRequestID,ResultCode,Amount,MpesaReceiptNumber,PhoneNumber) VALUES ('$MerchantRequestID','$CheckoutRequestID','$ResultCode','$Amount','$TransactionId','$UserPhoneNumber')");
+}
