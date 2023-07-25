@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Arsha Bootstrap Template - Index</title>
+  <title>Index</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -28,13 +28,6 @@
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: Arsha
-  * Updated: Jul 05 2023 with Bootstrap v5.3.0
-  * Template URL: https://bootstrapmade.com/arsha-free-bootstrap-html-template-corporate/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body>
@@ -43,7 +36,7 @@
   <header id="header" class="fixed-top ">
     <div class="container d-flex align-items-center">
 
-      <h1 class="logo me-auto"><a href="index.html">Chama App</a></h1>
+      <h1 class="logo me-auto"><a class="nav-link scrollto">Chama App</a></h1>
       <!-- Uncomment below if you prefer to use an image logo -->
       <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
@@ -52,14 +45,14 @@
           <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
           <li><a class="nav-link scrollto" href="#about">About</a></li>
           <li><a class="nav-link scrollto" href="#services">Services</a></li>
-          <li class="dropdown"><a href="#"><span>Choose</span> <i class="bi bi-chevron-down"></i></a>
+          <li class="dropdown"><a class="nav-link scrollto"><span>Choose</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
-              <li><a href="forms/login.php">login</a></li>
-              <li><a href="forms/register.php">Register</a></li>
-              <li><a href="forms/logout.php">Log Out</a></li>
+              <li><a href="login.php">login</a></li>
+              <li><a href="register.php">Register</a></li>
             </ul>
           </li>
           <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+          <li><a  class="nav-link scrollto" href="adminlogin.php">Admin</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
@@ -181,34 +174,7 @@
           <p>We are thrilled to connect with you and address any questions, concerns, or feedback you may have. At ChamaApp, we strive to foster a supportive and interactive community, and your input is invaluable to us.</p>
         </div>
 
-        <div class="row">
-
-
-          <div class="col-lg-5 d-flex align-items-stretch">
-            <div class="info">
-              <div class="address">
-                <i class="bi bi-geo-alt"></i>
-                <h4>Location:</h4>
-                <p>Nairobi</p>
-              </div>
-
-              <div class="email">
-                <i class="bi bi-envelope"></i>
-                <h4>Email:</h4>
-                <p>info@chamaapp.com</p>
-              </div>
-
-              <div class="phone">
-                <i class="bi bi-phone"></i>
-                <h4>Call:</h4>
-                <p>+254714644146</p>
-              </div>
-
-              <iframe src="https://www.google.com/maps/vt/data=nN_fNI9XjS5wPE…hQgBbZgQCUqUqxSxiyuP4Gw2-xa72u5J_z4RPBBZJNLiBgMf0" frameborder="0" style="border:0; width: 100%; height: 290px;" allowfullscreen></iframe>
-            </div>
-
-          </div>
-
+       
 
           <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
             <form action="forms/contact.php" method="post" role="form" class="php-email-form">
@@ -222,6 +188,11 @@
                   <input type="email" class="form-control" name="email" id="email" required>
                 </div>
               </div>
+              <div class="form-group col-md-6">
+                  <label for="name">Phone</label>
+                  <input type="text" class="form-control" name="phone" id="phone" required>
+                </div>
+              </div>
             
               <div class="form-group">
                 <label for="name">Message</label>
@@ -232,7 +203,7 @@
                 <div class="error-message"></div>
                 <div class="sent-message">Your message has been sent. Thank you!</div>
               </div>
-              <div class="text-center"><button type="submit">Send Message</button></div>
+              <div class="text-center"><button type="submit"id="sendMessageBtn">Send Message</button></div>
             </form>
           </div>
 
@@ -244,11 +215,10 @@
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
- 
+  <centre>
   <footer id="footer">
 
     <div class="footer-top">
-       <centre>
       <div class="container">
         <div class="row">
 
@@ -264,14 +234,13 @@
           </div>
           </div>
           </div>
-           </centre>
           </div>
 
     
 
           
   </footer><!-- End Footer -->
- 
+  </centre>
 
   <div id="preloader"></div>
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
@@ -289,5 +258,27 @@
   <script src="assets/js/main.js"></script>
 
 </body>
+<script>
+    // Replace 'YOUR_API_KEY' and 'YOUR_USERNAME' with your actual credentials
+    Africastalking.initialize({ apiKey: 'd772ab0e57838ef0f1c78569fb88ed093f018073c845e181ab1b3a914e740156', username: 'goodxy' });
+
+    // Function to handle the button click event
+    document.getElementById('sendMessageBtn').addEventListener('click', function() {
+      // Replace 'RECIPIENT_PHONE_NUMBER' with the actual recipient's phone number
+      const recipientPhoneNumber = document.getElementById('phone').value;
+      const message = 'Thanks for reaching out to us. We will address your issue.';
+
+      // Send the message via the Africa's Talking API
+      Africastalking.SMS.send({
+        to: recipientPhoneNumber,
+        message: message
+      }).then(response => {
+        // The message has been sent successfully
+        console.log('Message sent:', response);
+      }).catch(error => {
+        // An error occurred while sending the message
+        console.error('Error sending message:', error);
+      });
+    });
 
 </html>

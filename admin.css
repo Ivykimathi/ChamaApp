@@ -9,7 +9,7 @@
     /* background-size: cover; */
     /* background-position: center; */
     margin: 0;
-    max-height: 100vh;
+    max-height: 60vh;
     display: flex;
     flex-direction: column;
     font-family: 'Work Sans', sans-serif;
@@ -316,7 +316,7 @@
   /* Admin Dashboard styles */
 .admin-dashboard {
   display: flex;
-  height: 100vh; /* Adjust the height as needed */
+  height: 60vh; /* Adjust the height as needed */
 }
 
 .left-sidebar {

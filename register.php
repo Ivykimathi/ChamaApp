@@ -89,9 +89,47 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
+               
+                // User registered successfully
+    
+            // Send SMS using Africa's Talking API
+            // Include the Africa's Talking SDK
+            require_once 'autoload.php';
+    
+            // Set your API credentials
+            $username = 'goodxy';
+            $apiKey = '7efd6dd9d867e959938a572cb508f0c4d42bde4bb9997f5a96805fcac85b6189';
+    
+            // Initialize the SMS service
+            $AT = new AfricasTalking\SDK\AfricasTalking($username, $apiKey);
+    
+            // Create a new instance of the SMS service
+            $sms = $AT->sms();
+    
+            // Set the message
+            $message = 'Thank you for registering on Chama App! We assure quality services to uor members.';
+    
+            // Set the recipients (mobile number of the user)
+            $recipients = array($mobile_number);
+    
+            // Send the message
+            try {
+                $result = $sms->send([
+                    'to' => $recipients,
+                    'message' => $message
+                ]);
+    
+                // Log the response (optional)
+                file_put_contents('sms_response.log', print_r($result, true));
+    
                 // Redirect to login page
-                echo "Oops! Something went wrong. Please try again later.";
                 header("location: login.php");
+            } catch (Exception $e) {
+                echo "Oops! Something went wrong. Please try again later.";
+            }
+        } else {
+            echo "Oops! Something went wrong. Please try again later.";
+        }
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
             }
@@ -100,11 +138,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             mysqli_stmt_close($stmt);
         }
     }
-    
     // Close connection
     mysqli_close($link);
-}
-?>
+    ?>
  
 <!DOCTYPE html>
 <html lang="en">
