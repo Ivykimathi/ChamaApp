@@ -1,64 +1,36 @@
 <?php
+// INCLUDE THE ACCESS TOKEN FILE
+include 'accessToken.php';
 date_default_timezone_set('Africa/Nairobi');
+$processrequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+$callbackurl = 'https://71a6-197-156-129-118.ngrok-free.app/MPEsa-Daraja-Api/callback.php';
+$passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
+$BusinessShortCode = '174379';
+$stkpushheader = ['Content-Type:application/json', 'Authorization:Bearer ' . $access_token];
 
-if (isset($_POST['phone_number']) && isset($_POST['amount'])) {
-    # access token
-    $consumerKey = 'nk16Y74eSbTaGQgc9WF8j6FigApqOMWr'; // Fill with your app Consumer Key
-    $consumerSecret = '40fD1vRXCq90XFaU'; // Fill with your app Secret
+// CHECK IF FORM WAS SUBMITTED
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // RETRIEVE PHONE NUMBER AND AMOUNT FROM FORM
+    $phone = isset($_POST['phone_number']) ? $_POST['phone_number'] : '';
+    $money = isset($_POST['amount']) ? $_POST['amount'] : '';
 
-    # Define the variables
-    # Provide the following details, this part is found on your test credentials on the developer account
-    $BusinessShortCode = '174379';
-    $Passkey = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919';
+    // VALIDATE PHONE NUMBER AND AMOUNT (ADD YOUR OWN VALIDATION LOGIC HERE)
+    // For example, you might want to check if the phone number is valid and if the amount is greater than 0.
 
-    /*
-        This is your info, for
-        $PartyA should be the ACTUAL client's phone number or your phone number, format 2547********
-        $AccountReference, it may be an invoice number, account number, etc. on production systems, but for test just put anything
-        TransactionDesc can be anything, probably a better description of the transaction
-        $Amount, this is the total invoiced amount. Any amount here will be actually deducted from a client's side/your test phone number once the PIN has been entered to authorize the transaction. For developer/test accounts, this money will be reversed automatically by midnight.
-    */
-
-    $PartyA = $_POST['phone_number']; // This is the phone number entered in the form
-    $AccountReference = 'CHAMA APP';
-    $TransactionDesc = 'CHAMA APP PAYMENTS';
-    $Amount = $_POST['amount']; // This is the amount entered in the form
-
-    # Get the timestamp, format YYYYmmddhms -> 20181004151020
+    // ENCRYPT DATA TO GET PASSWORD
     $Timestamp = date('YmdHis');
+    $Password = base64_encode($BusinessShortCode . $passkey . $Timestamp);
 
-    # Get the base64 encoded string -> $password. The passkey is the M-PESA Public Key
-    $Password = base64_encode($BusinessShortCode . $Passkey . $Timestamp);
+    $PartyA = $phone;
+    $PartyB = '254768876579';
+    $AccountReference = 'chamaapp';
+    $TransactionDesc = 'stkpush test';
+    $Amount = $money;
 
-    # Header for access token
-    $headers = ['Content-Type:application/json; charset=utf8'];
-
-    # M-PESA endpoint URLs
-    $access_token_url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
-    $initiate_url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
-
-    # Callback URL
-    $CallBackURL = 'https://4911-197-156-129-118.ngrok-free.app/callback.php'; // Replace with your Ngrok callback URL
-
-    $curl = curl_init($access_token_url);
-    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($curl, CURLOPT_HEADER, FALSE);
-    curl_setopt($curl, CURLOPT_USERPWD, $consumerKey . ':' . $consumerSecret);
-    $result = curl_exec($curl);
-    $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-    $result = json_decode($result);
-    $access_token = $result->access_token;
-    curl_close($curl);
-
-    # Header for STK push
-    $stkheader = ['Content-Type:application/json', 'Authorization:Bearer ' . $access_token];
-
-    # Initiating the transaction
+    // INITIATE CURL
     $curl = curl_init();
-    curl_setopt($curl, CURLOPT_URL, $initiate_url);
-    curl_setopt($curl, CURLOPT_HTTPHEADER, $stkheader); // Setting custom header
-
+    curl_setopt($curl, CURLOPT_URL, $processrequestUrl);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $stkpushheader); // setting custom header
     $curl_post_data = array(
         // Fill in the request parameters with valid values
         'BusinessShortCode' => $BusinessShortCode,
@@ -69,7 +41,7 @@ if (isset($_POST['phone_number']) && isset($_POST['amount'])) {
         'PartyA' => $PartyA,
         'PartyB' => $BusinessShortCode,
         'PhoneNumber' => $PartyA,
-        'CallBackURL' => $CallBackURL,
+        'CallBackURL' => $callbackurl,
         'AccountReference' => $AccountReference,
         'TransactionDesc' => $TransactionDesc
     );
@@ -78,9 +50,78 @@ if (isset($_POST['phone_number']) && isset($_POST['amount'])) {
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_POST, true);
     curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+
     $curl_response = curl_exec($curl);
-    print_r($curl_response);
+    curl_close($curl);
 
-    echo $curl_response;
+    // ECHO RESPONSE
+    $data = json_decode($curl_response);
+
+    if (isset($data->CheckoutRequestID) && isset($data->ResponseCode) && $data->ResponseCode === "0") {
+        // DATABASE CONNECTION DETAILS
+        $db_host = 'localhost'; // Replace with your database host
+        $db_name = 'pay'; // Replace with your database name
+        $db_user = 'root'; // Replace with your database user
+        $db_pass = ''; // Replace with your database password
+
+        // CONNECT TO DATABASE
+        $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
+
+        // CHECK CONNECTION
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+
+        // ESCAPE STRINGS TO PREVENT SQL INJECTION
+        $CheckoutRequestID = $conn->real_escape_string($data->CheckoutRequestID);
+        $ResponseCode = $conn->real_escape_string($data->ResponseCode);
+        $phone = $conn->real_escape_string($phone);
+        $money = $conn->real_escape_string($money);
+
+        // INSERT TRANSACTION INTO DATABASE
+        $sql = "INSERT INTO transactions (CheckoutRequestID, ResponseCode, Phone, Amount, Timestamp) 
+                VALUES ('$CheckoutRequestID', '$ResponseCode', '$phone', '$money', NOW())";
+
+        if ($conn->query($sql) === TRUE) {
+            // SEND SMS TO USER USING AFRICA'S TALKING API
+            require_once 'path_to_africastalking_php_sdk'; // Replace with the actual path to the Africa's Talking PHP SDK
+            // Replace 'your_username' and 'your_api_key' with your actual credentials
+            $username = 'goodxy';
+            $apiKey = '7efd6dd9d867e959938a572cb508f0c4d42bde4bb9997f5a96805fcac85b6189';
+
+            // Initialize the SMS service
+            $AT = new Africastalking\SDK\Africastalking($username, $apiKey);
+
+            // Get the SMS service
+            $sms = $AT->sms();
+
+            // Set the SMS parameters
+            $recipients = $phone;
+            $message = "Payment of KES $money was successful. Transaction ID: $CheckoutRequestID";
+            $from = "CHAMAAPP";
+
+            // Send the SMS
+            $result = $sms->send([
+                'to' => $recipients,
+                'message' => $message,
+                'from' => $from,
+            ]);
+
+            // Display success message
+            echo "Payment successful. An SMS has been sent to your phone.";
+        } else {
+            echo "Error processing STK push payment. Response Code: " . $ResponseCode;
+        }
+
+        // CLOSE DATABASE CONNECTION
+        $conn->close();
+    } else {
+        // HANDLE API RESPONSE ERROR
+        if (isset($data->errorMessage)) {
+            echo "API Error: " . $data->errorMessage;
+        } else {
+            echo "Error processing STK push payment. Please check your input and try again.";
+        }
+    }
 }
-
+?>
