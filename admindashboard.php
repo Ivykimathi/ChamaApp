@@ -26,11 +26,17 @@ error_reporting(E_ALL);
         <div class="admin-dashboard">
             <div class="left-sidebar">
                 <ul>
-                    <li>View Group Balance</li>
                     <li>Loans Taken</li>
                     <li>Group Loan</li>
-                    <li>View Members</li>
-                </ul>
+                    <div class="grid-item" id="members-icon">
+                <button id="showMembersButton">View Members</button></div><br>
+                  
+
+<div class="grid-item" id="members-icon">
+    <button><a href="display.php">View Funds</a></button>
+</div>
+
+               
             </div>
             <div class="dashboard-content">
                 <div class="dashboard-grid">
@@ -47,11 +53,15 @@ error_reporting(E_ALL);
                         <img src='assets/img/iconsSocial/icons8-loan-64.png'alt="Loans Taken"/>
                     </div>
                     <!-- Add an ID to the Total Members div for easier manipulation -->
-<div class="grid-item" id="members-icon">
+<!-- <div class="grid-item" id="members-icon">
     <button id="showMembersButton">Total Members</button>
-    <img src='assets/img/iconsSocial/icons8-people-96.png' alt="Total Members"/>
-</div>
-<div id="userTable"></div>
+    <img src='assets/img/iconsSocial/icons8-people-96.png' alt="Total Members"/> -->
+    <!-- </div> -->
+                 <div class="grid-item">Total Members
+                        <img src='assets/img/iconsSocial/icons8-loan-64.png'alt="Loans Taken"/>
+                    </div>
+
+           <div id="userTable"></div>
 
 
 
