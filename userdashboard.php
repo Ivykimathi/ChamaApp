@@ -36,6 +36,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 .navbar .dropdown:hover>ul {opacity: 1;top: 100%;visibility: visible; }
 .navbar .dropdown .dropdown ul {top: 0;left: calc(100% - 30px);visibility: hidden; }
 .navbar .dropdown .dropdown:hover>ul {opacity: 1;top: 0;left: 100%;visibility: visible; }
+.nav-link{font:50px;}
 </style>
 <header id="header" class="fixed-top ">
   <div class="container d-flex align-items-center">
@@ -47,7 +48,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
           <li><a class="nav-link scrollto active" href="http://localhost/ChamaApp/">Home</a></li>
           <li><a class="nav-link scrollto" href="/ChamaApp/">About</a></li>
           <li><a class="nav-link scrollto" href="/ChamaApp/">Services</a></li>
-          <li class="dropdown"><a><span>Choose</span> <i class="bi bi-chevron-down"></i></a>
+          <li class="dropdown"><a class="nav-link scrollto"><span>Choose</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="logout.php">Logout</a></li>
               <li><a href="register.php">Register</a></li>
@@ -59,11 +60,13 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
       </nav>
 
     </div>
+    <h1 style="margin-left:890px;"class="my-5">Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>.
+     Welcome to our site.</h1>
   </header>
 </head>
 <body>
-  <br><br>
-    <h1 class="my-5">Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to our site.</h1>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+   
     <p>
         <a href="reset-password.php" class="btn btn-warning">Reset Your Password</a>
         <a href="logout.php" class="btn btn-danger ml-3">Sign Out of Your Account</a>

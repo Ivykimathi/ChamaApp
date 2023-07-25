@@ -17,12 +17,9 @@ error_reporting(E_ALL);
     <div>
         <section>
             <nav class="navbar">
-                <p class="brand-name">CHAMA</p>
+                <p class="brand-name">CHAMA App</p>
                 <ul class="list-items">
-                    <li> <a href="/ChamaApp/" id="Home">Home</a> </li>
-                    <li> <a href="/ChamaApp/" id="About">About Us</a> </li>
-                    <li> <a href="/ChamaApp/" >Services</a></li>
-                    <li> <a href="/ChamaApp/" id="admin">Admin</a></li>
+                    <li> <a  href="logout.php" id="Home">Logout</a> </li>
                 </ul> 
             </nav>
         </section>
@@ -49,9 +46,14 @@ error_reporting(E_ALL);
                     <div class="grid-item">Loans Taken
                         <img src='assets/img/iconsSocial/icons8-loan-64.png'alt="Loans Taken"/>
                     </div>
-                    <div class="grid-item" id='members-icon'>Total Members
-                        <img src='assets/img/iconsSocial/icons8-people-96.png' alt="Total Members"/>
-                    </div>
+                    <!-- Add an ID to the Total Members div for easier manipulation -->
+<div class="grid-item" id="members-icon">
+    <button id="showMembersButton">Total Members</button>
+    <img src='assets/img/iconsSocial/icons8-people-96.png' alt="Total Members"/>
+</div>
+<div id="userTable"></div>
+
+
 
                 </div>
             </div>
@@ -66,3 +68,35 @@ error_reporting(E_ALL);
     </div>
 </body>
 </html>
+
+
+
+<!-- Add the following JavaScript/jQuery code -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#showMembersButton").on("click", function() {
+            // Fetch user data from the server using AJAX
+            $.ajax({
+                type: "GET",
+                url: "get_members.php",
+                dataType: "json",
+                success: function(users) {
+                    // Create a table to display the user data
+                    let table = "<table>";
+                    table += "<tr><th>ID</th><th>Username</th><th>Phone</th></tr>";
+                    users.forEach(function(user) {
+                        table += "<tr><td>" + user.id + "</td><td>" + user.username + "</td><td>" + user.mobile_number + "</td></tr>";
+                    });
+                    table += "</table>";
+
+                    // Display the table inside a div
+                    $("#userTable").html(table);
+                },
+                error: function() {
+                    alert("Failed to fetch user data.");
+                }
+            });
+        });
+    });
+</script>
