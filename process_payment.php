@@ -84,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($conn->query($sql) === TRUE) {
             // SEND SMS TO USER USING AFRICA'S TALKING API
-            require_once 'path_to_africastalking_php_sdk'; // Replace with the actual path to the Africa's Talking PHP SDK
+            require_once 'autoload.php'; // Replace with the actual path to the Africa's Talking PHP SDK
             // Replace 'your_username' and 'your_api_key' with your actual credentials
             $username = 'goodxy';
             $apiKey = '7efd6dd9d867e959938a572cb508f0c4d42bde4bb9997f5a96805fcac85b6189';
