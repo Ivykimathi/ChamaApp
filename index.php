@@ -45,7 +45,7 @@
           <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
           <li><a class="nav-link scrollto" href="#about">About</a></li>
           <li><a class="nav-link scrollto" href="#services">Services</a></li>
-          <li class="dropdown"><a class="nav-link scrollto"><span>Choose</span> <i class="bi bi-chevron-down"></i></a>
+          <li class="dropdown"><a class="nav-link scrollto"><span>Accounts</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="login.php">login</a></li>
               <li><a href="register.php">Register</a></li>
