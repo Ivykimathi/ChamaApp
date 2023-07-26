@@ -1,11 +1,11 @@
 <?php
-
- 
-// Check if the user is already logged in, if yes then redirect him to welcome page
+// Check if the user is already logged in, if yes then redirect him to the welcome page
+session_start();
 if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
     header("location: userdashboard.php");
     exit;
 }
+
 // Include config file
 require_once "config.php";
  
@@ -15,7 +15,6 @@ $username_err = $password_err = $login_err = "";
  
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
- 
     // Check if username is empty
     if(empty(trim($_POST["username"]))){
         $username_err = "Please enter username.";
@@ -61,7 +60,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["id"] = $id;
                             $_SESSION["username"] = $username;   
                             
-                     
+                            // Set success message for display on userdashboard.php
+                            $_SESSION["success_msg"] = "Login successful. Welcome, $username!";
                             
                             // Redirect user to welcome page
                             header("location: userdashboard.php");
@@ -86,7 +86,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Close connection
     mysqli_close($link);
 }
-
 ?>
  
 <!DOCTYPE html>
@@ -101,32 +100,36 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     </style>
 </head>
 <body>
-    <div class="wrapper">
-        <h2>Login</h2>
-        <p>Please fill in your credentials to login.</p>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="wrapper">
+                <h2>Login</h2>
+                <p>Please fill in your credentials to login.</p>
 
-        <?php 
-        if(!empty($login_err)){
-            echo '<div class="alert alert-danger">' . $login_err . '</div>';
-        }        
-        ?>
+                <?php 
+                if(!empty($login_err)){
+                    echo '<div class="alert alert-danger">' . $login_err . '</div>';
+                }        
+                ?>
 
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div class="form-group">
-                <label>Username</label>
-                <input type="text" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
-                <span class="invalid-feedback"><?php echo $username_err; ?></span>
-            </div>    
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>">
-                <span class="invalid-feedback"><?php echo $password_err; ?></span>
+                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
+                        <span class="invalid-feedback"><?php echo $username_err; ?></span>
+                    </div>    
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>">
+                        <span class="invalid-feedback"><?php echo $password_err; ?></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary" value="Login">
+                    </div>
+                    <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
+                </form>
             </div>
-            <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Login">
-            </div>
-            <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
-        </form>
+        </div>
     </div>
 </body>
 </html>

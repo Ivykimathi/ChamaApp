@@ -1,43 +1,45 @@
 <?php
 // Initialize the session
 session_start();
+
 // Include config file
 require_once "config.php";
- 
+
 // Define variables and initialize with empty values
 $username = $password = $confirm_password = $mobile_number = "";
 $username_err = $password_err = $confirm_password_err = $mobile_number_err = "";
- 
+$registration_success_msg = ""; // New variable to track registration success
+
 // Processing form data when form is submitted
-if($_SERVER["REQUEST_METHOD"] == "POST"){
- 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     // Validate username
-    if(empty(trim($_POST["username"]))){
+    if (empty(trim($_POST["username"]))) {
         $username_err = "Please enter a username.";
-    } elseif(!preg_match('/^[a-zA-Z0-9_]+$/', trim($_POST["username"]))){
+    } elseif (!preg_match('/^[a-zA-Z0-9_]+$/', trim($_POST["username"]))) {
         $username_err = "Username can only contain letters, numbers, and underscores.";
-    } else{
+    } else {
         // Prepare a select statement
         $sql = "SELECT id FROM users WHERE username = ?";
-        
-        if($stmt = mysqli_prepare($link, $sql)){
+
+        if ($stmt = mysqli_prepare($link, $sql)) {
             // Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "s", $param_username);
-            
+
             // Set parameters
             $param_username = trim($_POST["username"]);
-            
+
             // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
+            if (mysqli_stmt_execute($stmt)) {
                 /* store result */
                 mysqli_stmt_store_result($stmt);
-                
-                if(mysqli_stmt_num_rows($stmt) == 1){
+
+                if (mysqli_stmt_num_rows($stmt) == 1) {
                     $username_err = "This username is already taken.";
-                } else{
+                } else {
                     $username = trim($_POST["username"]);
                 }
-            } else{
+            } else {
                 echo "Oops! Something went wrong. Please try again later.";
             }
 
@@ -45,92 +47,59 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             mysqli_stmt_close($stmt);
         }
     }
-    
+
     // Validate password
-    if(empty(trim($_POST["password"]))){
-        $password_err = "Please enter a password.";     
-    } elseif(strlen(trim($_POST["password"])) < 6){
+    if (empty(trim($_POST["password"]))) {
+        $password_err = "Please enter a password.";
+    } elseif (strlen(trim($_POST["password"])) < 6) {
         $password_err = "Password must have at least 6 characters.";
-    } else{
+    } else {
         $password = trim($_POST["password"]);
     }
-    
+
     // Validate confirm password
-    if(empty(trim($_POST["confirm_password"]))){
-        $confirm_password_err = "Please confirm password.";     
-    } else{
+    if (empty(trim($_POST["confirm_password"]))) {
+        $confirm_password_err = "Please confirm password.";
+    } else {
         $confirm_password = trim($_POST["confirm_password"]);
-        if(empty($password_err) && ($password != $confirm_password)){
+        if (empty($password_err) && ($password != $confirm_password)) {
             $confirm_password_err = "Password did not match.";
         }
     }
-    
+
     // Validate mobile number
-    if(empty(trim($_POST["mobile_number"]))){
+    if (empty(trim($_POST["mobile_number"]))) {
         $mobile_number_err = "Please enter your mobile number.";
     } else {
+        // Add validation for the mobile number here, if necessary
+        // For example, you could check the format or length of the mobile number.
+        // For now, we'll assume any input is valid.
         $mobile_number = trim($_POST["mobile_number"]);
     }
-    
-    // Check input errors before inserting in database
-    if(empty($username_err) && empty($password_err) && empty($confirm_password_err) && empty($mobile_number_err)){
-        
+
+    // Check input errors before inserting into the database
+    if (empty($username_err) && empty($password_err) && empty($confirm_password_err) && empty($mobile_number_err)) {
+
         // Prepare an insert statement
         $sql = "INSERT INTO users (username, password, mobile_number) VALUES (?, ?, ?)";
-         
-        if($stmt = mysqli_prepare($link, $sql)){
+
+        if ($stmt = mysqli_prepare($link, $sql)) {
             // Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "sss", $param_username, $param_password, $param_mobile_number);
-            
+
             // Set parameters
             $param_username = $username;
             $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
             $param_mobile_number = $mobile_number;
-            
+
             // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-               
+            if (mysqli_stmt_execute($stmt)) {
                 // User registered successfully
-    
-            // Send SMS using Africa's Talking API
-            // Include the Africa's Talking SDK
-            require_once 'autoload.php';
-    
-            // Set your API credentials
-            $username = 'goodxy';
-            $apiKey = '7efd6dd9d867e959938a572cb508f0c4d42bde4bb9997f5a96805fcac85b6189';
-    
-            // Initialize the SMS service
-            $AT = new AfricasTalking\SDK\AfricasTalking($username, $apiKey);
-    
-            // Create a new instance of the SMS service
-            $sms = $AT->sms();
-    
-            // Set the message
-            $message = 'Thank you for registering on Chama App! We assure quality services to uor members.';
-    
-            // Set the recipients (mobile number of the user)
-            $recipients = array($mobile_number);
-    
-            // Send the message
-            try {
-                $result = $sms->send([
-                    'to' => $recipients,
-                    'message' => $message
-                ]);
-    
-                // Log the response (optional)
-                file_put_contents('sms_response.log', print_r($result, true));
-    
-                // Redirect to login page
-                header("location: login.php");
-            } catch (Exception $e) {
-                echo "Oops! Something went wrong. Please try again later.";
-            }
-        } else {
-            echo "Oops! Something went wrong. Please try again later.";
-        }
-            } else{
+                $registration_success_msg = "Registration successful. You can now <a href='login.php'>login</a>.";
+
+                // You may also redirect the user to the login page after a successful registration:
+                // header("location: login.php");
+            } else {
                 echo "Oops! Something went wrong. Please try again later.";
             }
 
@@ -140,32 +109,42 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     // Close connection
     mysqli_close($link);
-    ?>
- 
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Sign Up</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body { 
-            font: 14px sans-serif; 
-            display: flex; 
+        body {
+            font: 14px sans-serif;
+            display: flex;
             justify-content: center; /* Center the wrapper div horizontally */
             align-items: center; /* Center the wrapper div vertically */
             height: 100vh; /* Set the wrapper div to the full height of the viewport */
         }
-        .wrapper{ 
-            width: 360px; 
-            padding: 20px; 
+
+        .wrapper {
+            width: 360px;
+            padding: 20px;
         }
     </style>
 </head>
+
 <body>
     <div class="wrapper">
         <h2 class="text-center">Sign Up</h2>
         <p class="text-center">Please fill this form to create an account.</p>
+
+        <!-- Display the registration success message -->
+        <?php if (!empty($registration_success_msg)) : ?>
+            <div class="alert alert-success"><?php echo $registration_success_msg; ?></div>
+        <?php endif; ?>
+
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-group">
                 <label>Username</label>
@@ -193,6 +172,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             </div>
             <p class="text-center">Already have an account? <a href="login.php">Login here</a>.</p>
         </form>
-    </div>    
+    </div>
 </body>
+
 </html>
