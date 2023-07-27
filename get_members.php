@@ -15,6 +15,7 @@ while ($row = mysqli_fetch_assoc($result)) {
     $users[] = $row;
 }
 
+
 // Send the user data as a JSON response
 header("Content-Type: application/json");
 echo json_encode($users);

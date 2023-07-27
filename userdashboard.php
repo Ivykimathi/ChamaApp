@@ -38,6 +38,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 .navbar .dropdown .dropdown:hover>ul {opacity: 1;top: 0;left: 100%;visibility: visible; }
 .nav-link{font:50px;}
 </style>
+    <link rel="stylesheet" href="admin.css">
 <header id="header" class="fixed-top ">
   <div class="container d-flex align-items-center">
 <h1 class="logo me-auto"><a href="index.html">Chama App</a></h1>  <!-- Uncomment below if you prefer to use an image logo -->
@@ -67,14 +68,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 <h1 style="margin-left:890px;"class="my-5">Welcome <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>,</h1>
  
   
-    <p>
-        <a href="reset-password.php" class="btn btn-warning">Reset Your Password</a>
-        <a href="logout.php" class="btn btn-danger ml-3">Sign Out of Your Account</a>
-        <a href="paymentform.php" class="btn btn-danger ml-3">Proceed to Payment</a>
-    </p>
+   
 
     <body>
-    <h1>Welcome, <?php echo $userData['name'] ?? ''; ?>!</h1>
+   
 
     <div class="frame">
         <h2>User Profile</h2>
@@ -92,7 +89,41 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         <p><strong>Loan Amount:</strong> <?php echo $accountsData['loan_amount'] ?? ''; ?></p>
         <p><strong>Loan Status:</strong> <?php echo $accountsData['loan_status'] ?? ''; ?></p>
     </div>
+    <p>
+        <a href="reset-password.php" class="btn btn-warning">Reset Your Password</a>
+        <a href="logout.php" class="btn btn-danger ml-3">Sign Out of Your Account</a>
+        <a href="paymentform.php" class="btn btn-danger ml-3">Proceed to Payment</a>
+    </p>
 
+    <div class="dashboard-content">
+                <div class="dashboard-grid">
+                    <!-- Row 1 -->
+                    <div class="grid-item">Wallet
+                    <img src='assets/img/iconsSocial/icons8-wallet-50.png' alt="Wallet"/>
+                    <h4>KES</h4> <span id="totalAmount"></span>
+                     
+    </div>
+
+        <div class="grid-item">Paid Loans
+                        <img src='assets/img/iconsSocial/icons8-pay-30.png' alt="Paid Loans"/>
+                    </div>
+
+                    <!-- Row 2 -->
+                    <div class="grid-item">Loans Taken
+                        <img src='assets/img/iconsSocial/icons8-loan-64.png'alt="Loans Taken"/>
+                    </div>
+                  
+                 <div class="grid-item">Total Members
+                        <img src='assets/img/iconsSocial/icons8-loan-64.png'alt="Loans Taken"/>
+                        <h3><span id="totalMembers"></span></h3> <h4>members</h4>
+                    </div>
+
+                    <div id="membersTableContainer"></div>
+
+
+
+                </div>
+            </div>
     
 </body>
 </body>
