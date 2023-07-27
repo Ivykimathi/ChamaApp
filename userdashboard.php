@@ -67,64 +67,21 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 <body><br><br><br>
 <h1 style="margin-left:890px;"class="my-5">Welcome <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>,</h1>
  
-  
-   
-
-    <body>
-   
-
-    <div class="frame">
-        <h2>User Profile</h2>
-        <p><strong>Name:</strong><b><?php echo htmlspecialchars($_SESSION["username"]); ?></b></p>
-        <p><strong>Phone Number</strong> <?php echo $userData['email'] ?? ''; ?></p>
-    </div>
-
-    <div class="frame">
-        <h2>Account Balance</h2>
-        <p><strong>Account:</strong> <?php echo $accountsData['account_balance'] ?? ''; ?></p>
-    </div>
-
-    <div class="frame">
-        <h2>Loan Details</h2>
-        <p><strong>Loan Amount:</strong> <?php echo $accountsData['loan_amount'] ?? ''; ?></p>
-        <p><strong>Loan Status:</strong> <?php echo $accountsData['loan_status'] ?? ''; ?></p>
+    <div class="dashboard-content">
+                <div class="dashboard-grid">
+                    <!-- Row 1 -->
+                    <div class="grid-item">User Profile
+                    <p><strong>Name:</strong><b><?php echo htmlspecialchars($_SESSION["username"]); ?></b></p>
+             <p><strong>Phone Number</strong> <?php echo $userData['email'] ?? ''; ?></p>               
     </div>
     <p>
         <a href="reset-password.php" class="btn btn-warning">Reset Your Password</a>
         <a href="logout.php" class="btn btn-danger ml-3">Sign Out of Your Account</a>
         <a href="paymentform.php" class="btn btn-danger ml-3">Proceed to Payment</a>
-    </p>
-
-    <div class="dashboard-content">
-                <div class="dashboard-grid">
-                    <!-- Row 1 -->
-                    <div class="grid-item">Wallet
-                    <img src='assets/img/iconsSocial/icons8-wallet-50.png' alt="Wallet"/>
-                    <h4>KES</h4> <span id="totalAmount"></span>
-                     
-    </div>
-
-        <div class="grid-item">Paid Loans
-                        <img src='assets/img/iconsSocial/icons8-pay-30.png' alt="Paid Loans"/>
-                    </div>
-
-                    <!-- Row 2 -->
-                    <div class="grid-item">Loans Taken
-                        <img src='assets/img/iconsSocial/icons8-loan-64.png'alt="Loans Taken"/>
-                    </div>
-                  
-                 <div class="grid-item">Total Members
-                        <img src='assets/img/iconsSocial/icons8-loan-64.png'alt="Loans Taken"/>
-                        <h3><span id="totalMembers"></span></h3> <h4>members</h4>
-                    </div>
-
-                    <div id="membersTableContainer"></div>
-
-
-
-                </div>
-            </div>
+     </p>
+     </div>
+     </div>
     
-</body>
+
 </body>
 </html>
