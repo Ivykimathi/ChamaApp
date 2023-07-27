@@ -68,32 +68,18 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 <body><br><br><br>
 <h1 style="margin-left:890px;"class="my-5">Welcome <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>,</h1>
  
-  
-   
-
-    <body>
-   
-
-    <div class="frame">
-        <h2>User Profile</h2>
-        <p><strong>Name:</strong><b><?php echo htmlspecialchars($_SESSION["username"]); ?></b></p>
-        <p><strong>Phone Number</strong> <?php echo $userData['email'] ?? ''; ?></p>
-    </div>
-
-    <div class="frame">
-        <h2>Account Balance</h2>
-        <p><strong>Account:</strong> <?php echo $accountsData['account_balance'] ?? ''; ?></p>
-    </div>
-
-    <div class="frame">
-        <h2>Loan Details</h2>
-        <p><strong>Loan Amount:</strong> <?php echo $accountsData['loan_amount'] ?? ''; ?></p>
-        <p><strong>Loan Status:</strong> <?php echo $accountsData['loan_status'] ?? ''; ?></p>
+    <div class="dashboard-content">
+                <div class="dashboard-grid">
+                    <!-- Row 1 -->
+                    <div class="grid-item">User Profile
+                    <p><strong>Name:</strong><b><?php echo htmlspecialchars($_SESSION["username"]); ?></b></p>
+             <p><strong>Phone Number</strong> <?php echo $userData['email'] ?? ''; ?></p>               
     </div>
     <p>
         <a href="reset-password.php" class="btn btn-warning">Reset Your Password</a>
         <a href="logout.php" class="btn btn-danger ml-3">Sign Out of Your Account</a>
         <a href="paymentform.php" class="btn btn-danger ml-3">Proceed to Payment</a>
+<<<<<<< HEAD
     </p>
 
     <div class="dashboard-content">
@@ -157,7 +143,12 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
                 </div>
             </div>
+=======
+     </p>
+     </div>
+     </div>
+>>>>>>> 6bfdf7e8bbb67569c32f7748700b0b70f9e438eb
     
-</body>
+
 </body>
 </html>

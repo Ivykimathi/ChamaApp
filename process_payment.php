@@ -58,6 +58,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $data = json_decode($curl_response);
 
     if (isset($data->CheckoutRequestID) && isset($data->ResponseCode) && $data->ResponseCode === "0") {
+        // TRANSACTION SUCCESSFUL, NOW SEND SMS
+        require 'vendor/autoload.php'; // Make sure to include the autoload file to load the classes.
+
+        // Set up the Africastalking API credentials
+        $username = 'YOUR_USERNAME';
+        $apiKey = 'YOUR_API_KEY';
+
+        // Initialize the Africastalking SDK
+        $AT = new AfricasTalking\SDK\AfricasTalking($username, $apiKey);
+
+        // Get the SMS service
+        $sms = $AT->sms();
+
+        // Set the message recipient and text
+        $recipient = $phone;
+        $message = 'Your transaction was successful. Thank you for your payment!';
+
+        try {
+            // Send the SMS
+            $response = $sms->send([
+                'to' => $recipient,
+                'message' => $message,
+            ]);
+
+            // Output the SMS response (you can handle it as needed)
+            print_r($response);
+        } catch (Exception $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+
         // DATABASE CONNECTION DETAILS
         $db_host = 'localhost'; // Replace with your database host
         $db_name = 'pay'; // Replace with your database name
@@ -81,6 +111,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // INSERT TRANSACTION INTO DATABASE
         $sql = "INSERT INTO transactions (CheckoutRequestID, ResponseCode, Phone, Amount, Timestamp) 
                 VALUES ('$CheckoutRequestID', '$ResponseCode', '$phone', '$money', NOW())";
+
+        // Execute the SQL query
+        if ($conn->query($sql) !== TRUE) {
+            echo "Error inserting transaction data into the database: " . $conn->error;
+        }
 
         // CLOSE DATABASE CONNECTION
         $conn->close();
