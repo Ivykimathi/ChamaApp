@@ -58,36 +58,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $data = json_decode($curl_response);
 
     if (isset($data->CheckoutRequestID) && isset($data->ResponseCode) && $data->ResponseCode === "0") {
-        // TRANSACTION SUCCESSFUL, NOW SEND SMS
-        require 'vendor/autoload.php'; // Make sure to include the autoload file to load the classes.
-
-        // Set up the Africastalking API credentials
-        $username = 'YOUR_USERNAME';
-        $apiKey = 'YOUR_API_KEY';
-
-        // Initialize the Africastalking SDK
-        $AT = new AfricasTalking\SDK\AfricasTalking($username, $apiKey);
-
-        // Get the SMS service
-        $sms = $AT->sms();
-
-        // Set the message recipient and text
-        $recipient = $phone;
-        $message = 'Your transaction was successful. Thank you for your payment!';
-
-        try {
-            // Send the SMS
-            $response = $sms->send([
-                'to' => $recipient,
-                'message' => $message,
-            ]);
-
-            // Output the SMS response (you can handle it as needed)
-            print_r($response);
-        } catch (Exception $e) {
-            echo 'Error: ' . $e->getMessage();
-        }
-
         // DATABASE CONNECTION DETAILS
         $db_host = 'localhost'; // Replace with your database host
         $db_name = 'pay'; // Replace with your database name
@@ -112,9 +82,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "INSERT INTO transactions (CheckoutRequestID, ResponseCode, Phone, Amount, Timestamp) 
                 VALUES ('$CheckoutRequestID', '$ResponseCode', '$phone', '$money', NOW())";
 
-        // Execute the SQL query
-        if ($conn->query($sql) !== TRUE) {
-            echo "Error inserting transaction data into the database: " . $conn->error;
+        if ($conn->query($sql) === TRUE) {
+            // SEND SMS TO USER USING AFRICA'S TALKING API
+            require_once 'vendor/africastalking/AfricasTalkingGateway.php';
+            require_once 'vendor/autoload.php'; // Replace with the actual path to the Africa's Talking PHP SDK
+            // Replace 'your_username' and 'your_api_key' with your actual credentials
+            $username = 'goodxy';
+            $apiKey = '7efd6dd9d867e959938a572cb508f0c4d42bde4bb9997f5a96805fcac85b6189';
+
+            // Initialize the SMS service
+            $AT = new Africastalking\SDK\Africastalking($username, $apiKey);
+
+            // Get the SMS service
+            // $sms = $AT->sms();
+
+            // Set the SMS parameters
+            $recipients = $phone;
+            $message = "Payment of KES $money was successful. Transaction ID: $CheckoutRequestID";
+            $from = "CHAMAAPP";
+
+            // Send the SMS
+            $result = $sms->send([
+                'to' => $recipients,
+                'message' => $message,
+                // 'from' => $from,
+            ]);
+
+            // Display success message
+            echo "Payment successful. An SMS has been sent to your phone.";
+        } else {
+            echo "Error processing STK push payment. Response Code: " . $ResponseCode;
         }
 
         // CLOSE DATABASE CONNECTION

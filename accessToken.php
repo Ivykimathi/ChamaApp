@@ -14,5 +14,14 @@ $result = curl_exec($curl);
 $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 $result = json_decode($result);
 //ASSIGN ACCESS TOKEN TO A VARIABLE
-$access_token = $result->access_token;
+// $access_token = $result->access_token;
+// Make sure $result is not null before accessing its properties
+if ($result !== null) {
+    $access_token = $result->access_token;
+    // Rest of the code that uses the access token
+} else {
+    // Handle the case when $result is null
+    echo "Error: Unable to process STK push payment. Check your input and try again.";
+}
+
 curl_close($curl);

@@ -4,7 +4,7 @@
     <title>Members Table</title>
     <style>
         table {
-            margin-left:40px;
+            margin-left: 40px;
             width: 70%;
             border-collapse: collapse;
         }
@@ -45,16 +45,15 @@
                 echo "<td>" . $user['id'] . "</td>";
                 echo "<td>" . $user['username'] . "</td>";
                 echo "<td>" . $user['mobile_number'] . "</td>";
-                echo '<td><button onclick="remindMember(' . $user['mobile_number'] . ')">Remind Member</button></td>';
+                echo '<td><button onclick="remindMember(\'' . $user['mobile_number'] . '\')">Remind Member</button></td>';
                 echo "</tr>";
             }
         ?>
     </table><br><br>
-   
     <button>Remind Member</button>
+    <!-- ... (Your existing "Remind Member" button, if needed) ... -->
 
-</body>
-<script>
+    <script>
         function remindMember(mobileNumber) {
             fetch("send_sms.php?mobile_number=" + mobileNumber)
                 .then(response => response.json())
@@ -67,4 +66,3 @@
         }
     </script>
 </html>
-

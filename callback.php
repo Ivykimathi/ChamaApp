@@ -33,7 +33,7 @@ if ($ResultCode == 0) {
         die("Connection failed: " . $conn->connect_error);
     }
     
-    // ESCAPE USER INPUT FOR SECURITY (OPTIONAL)
+    // // ESCAPE USER INPUT FOR SECURITY (OPTIONAL)
     $MerchantRequestID = mysqli_real_escape_string($conn, $MerchantRequestID);
     $CheckoutRequestID = mysqli_real_escape_string($conn, $CheckoutRequestID);
     $ResultCode = mysqli_real_escape_string($conn, $ResultCode);

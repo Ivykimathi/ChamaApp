@@ -6,27 +6,32 @@ require_once 'conf.php';
 
 use AfricasTalking\SDK\AfricasTalking;
 
-// Set the phone number you want to send the SMS to
-$recipient = '+254798159792'; // Replace with the recipient's phone number in international format
+// Check if the mobile_number query parameter is provided
+if (isset($_GET['mobile_number'])) {
+    // Get the phone number from the query parameter
+    $recipient = $_GET['mobile_number'];
 
-// Create a new instance of the SMS service
-$AT = new AfricasTalking($AT_USERNAME, $AT_API_KEY);
-$sms = $AT->sms();
+    // Create a new instance of the SMS service
+    $AT = new AfricasTalking($AT_USERNAME, $AT_API_KEY);
+    $sms = $AT->sms();
 
-// Set the message and sender ID
-$message = 'Hello, this is a test message from Africa\'s Talking!';
+    // Set the message and sender ID
+    $message = 'Hello, this is a test message from Africa\'s Talking!';
 
-try {
-    // Send the SMS
-    $result = $sms->send([
-        'to' => $recipient,
-        'message' => $message,
-        'from' => $SMS_SENDER_ID,
-    ]);
+    try {
+        // Send the SMS
+        $result = $sms->send([
+            'to' => $recipient,
+            'message' => $message,
+            // 'from' => $SMS_SENDER_ID,
+        ]);
 
-    // Output the response
-    print_r($result);
-} catch (Exception $e) {
-    echo 'Error: ' . $e->getMessage();
+        // Output the response
+        echo json_encode(array("message" => "SMS sent successfully."));
+    } catch (Exception $e) {
+        echo json_encode(array("message" => "Error sending SMS: " . $e->getMessage()));
+    }
+} else {
+    echo json_encode(array("message" => "Mobile number not provided."));
 }
 ?>
