@@ -96,7 +96,7 @@ if ($data !== null && isset($data->Body->stkCallback)) {
         $db_name = 'pay'; // Replace with your database name
         $db_user = 'root'; // Replace with your database user
         $db_pass = ''; // Replace with your database password
-
+    
         // CONNECT TO DATABASE
         $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
@@ -116,21 +116,32 @@ if ($data !== null && isset($data->Body->stkCallback)) {
         // INSERT TRANSACTION DATA INTO THE DATABASE
         $sql = "INSERT INTO success_transactions (MerchantRequestID, CheckoutRequestID, ResultCode, Amount, MpesaReceiptNumber, PhoneNumber) VALUES ('$MerchantRequestID', '$CheckoutRequestID', '$ResultCode', '$Amount', '$TransactionId', '$UserPhoneNumber')";
 
-        if ($conn->query($sql) === TRUE) {
-            // TRANSACTION INSERTED SUCCESSFULLY
-            echo json_encode(array("message" => "Transaction inserted successfully."));
-        } else {
-            // ERROR INSERTING TRANSACTION
-            echo json_encode(array("message" => "Error inserting transaction: " . $conn->error));
-        }
+        
+    if ($conn->query($sql) === TRUE) {
+        // TRANSACTION INSERTED SUCCESSFULLY
 
-        // CLOSE DATABASE CONNECTION
-        $conn->close();
+        // Include the SMS sending function and call it
+        require_once 'send_sms.php';
+
+        $message = 'Your payment of KES ' . $Amount . ' was successful. Transaction ID: ' . $TransactionId;
+
+        $smsSent = sendSMS($UserPhoneNumber, $message);
+
+        if ($smsSent) {
+            echo json_encode(array("message" => "Transaction inserted successfully. SMS sent."));
+        } else {
+            echo json_encode(array("message" => "Transaction inserted successfully. Error sending SMS."));
+        }
     } else {
-        // TRANSACTION WAS NOT SUCCESSFUL, HANDLE AS NEEDED
-        echo json_encode(array("message" => "Transaction was not successful."));
+        // ERROR INSERTING TRANSACTION
+        echo json_encode(array("message" => "Error inserting transaction: " . $conn->error));
     }
+
+    // CLOSE DATABASE CONNECTION
+    $conn->close();
 } else {
-    // Handle the case where decoding or required properties are missing
-    echo json_encode(array("message" => "Invalid request data."));
+    // TRANSACTION WAS NOT SUCCESSFUL, HANDLE AS NEEDED
+    echo json_encode(array("message" => "Transaction was not successful."));
 }
+}
+?>

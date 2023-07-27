@@ -3,7 +3,7 @@
 
 // Set your Africa's Talking API credentials
 $AT_USERNAME = 'goodxy';
-$AT_API_KEY = '9fcaab22f81a89fd3ae6e95ef9a12858c2706a7b5a3fd30b7a571db91bae95f4';
+$AT_API_KEY = 'cc392d597c5e6f1848b55fa894a60a7a3a80be846cf7e475c003da23929d88f4';
 
 // Set the sender ID for the SMS (alphanumeric, max 11 characters)
 //$SMS_SENDER_ID = 'pay';

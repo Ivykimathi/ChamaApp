@@ -83,36 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 VALUES ('$CheckoutRequestID', '$ResponseCode', '$phone', '$money', NOW())";
 
         if ($conn->query($sql) === TRUE) {
-            // SEND SMS TO USER USING AFRICA'S TALKING API
-            require_once 'vendor/africastalking/AfricasTalkingGateway.php';
-            require_once 'vendor/autoload.php'; // Replace with the actual path to the Africa's Talking PHP SDK
-            // Replace 'your_username' and 'your_api_key' with your actual credentials
-            $username = 'goodxy';
-            $apiKey = '7efd6dd9d867e959938a572cb508f0c4d42bde4bb9997f5a96805fcac85b6189';
-
-            // Initialize the SMS service
-            $AT = new Africastalking\SDK\Africastalking($username, $apiKey);
-
-            // Get the SMS service
-            // $sms = $AT->sms();
-
-            // Set the SMS parameters
-            $recipients = $phone;
-            $message = "Payment of KES $money was successful. Transaction ID: $CheckoutRequestID";
-            $from = "CHAMAAPP";
-
-            // Send the SMS
-            $result = $sms->send([
-                'to' => $recipients,
-                'message' => $message,
-                // 'from' => $from,
-            ]);
-
-            // Display success message
-            echo "Payment successful. An SMS has been sent to your phone.";
-        } else {
-            echo "Error processing STK push payment. Response Code: " . $ResponseCode;
-        }
+           
 
         // CLOSE DATABASE CONNECTION
         $conn->close();
@@ -123,6 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo "Error processing STK push payment. Please check your input and try again.";
         }
+    }
     }
 }
 ?>
