@@ -15,6 +15,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <meta charset="UTF-8">
     <title>Welcome</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="admin.css">
     <style>
         body{ font: 14px sans-serif; text-align: center; }
         header{ transition: all 0.5s; z-index: 997;padding: 15px 0;margin-top:0px;background: #37517e;}
@@ -78,9 +79,75 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         <a href="reset-password.php" class="btn btn-warning">Reset Your Password</a>
         <a href="logout.php" class="btn btn-danger ml-3">Sign Out of Your Account</a>
         <a href="paymentform.php" class="btn btn-danger ml-3">Proceed to Payment</a>
+<<<<<<< HEAD
+    </p>
+
+    <div class="dashboard-content">
+                <div class="dashboard-grid">
+                    <!-- Row 1 -->
+                    <div class="grid-item">Wallet
+                    <img src='assets/img/iconsSocial/icons8-wallet-50.png' alt="Wallet"/>
+                    <h4>KES</h4> <span id="totalAmount"></span>
+                     
+    </div>
+
+        <div class="grid-item">Paid Loans
+                        <img src='assets/img/iconsSocial/icons8-pay-30.png' alt="Paid Loans"/>
+                    </div>
+
+                    <!-- Row 2 -->
+                    <div class="grid-item">Loans Taken
+                        <img src='assets/img/iconsSocial/icons8-loan-64.png'alt="Loans Taken"/>
+                    </div>
+                  
+                 <div class="grid-item">Total Members
+                        <img src='assets/img/iconsSocial/icons8-loan-64.png'alt="Loans Taken"/>
+                        <h3><span id="totalMembers"></span></h3> <h4>members</h4>
+                    </div>
+
+                    <div id="membersTableContainer"></div>
+
+
+
+                </div>
+            </div>
+
+
+
+            <div class="dashboard-content">
+                <div class="dashboard-grid">
+                    <!-- Row 1 -->
+                    <div class="grid-item">Wallet
+                    <img src='assets/img/iconsSocial/icons8-wallet-50.png' alt="Wallet"/>
+                    <h4>KES</h4> <span id="totalAmount"></span>
+                     
+    </div>
+
+        <div class="grid-item">Paid Loans
+                        <img src='assets/img/iconsSocial/icons8-pay-30.png' alt="Paid Loans"/>
+                    </div>
+
+                    <!-- Row 2 -->
+                    <div class="grid-item">Loans Taken
+                        <img src='assets/img/iconsSocial/icons8-loan-64.png'alt="Loans Taken"/>
+                    </div>
+                  
+                 <div class="grid-item">Total Members
+                        <img src='assets/img/iconsSocial/icons8-loan-64.png'alt="Loans Taken"/>
+                        <h3><span id="totalMembers"></span></h3> <h4>members</h4>
+                    </div>
+
+                    <div id="membersTableContainer"></div>
+
+
+
+                </div>
+            </div>
+=======
      </p>
      </div>
      </div>
+>>>>>>> 6bfdf7e8bbb67569c32f7748700b0b70f9e438eb
     
 
 </body>
